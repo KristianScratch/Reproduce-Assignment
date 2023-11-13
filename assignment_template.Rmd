@@ -1,0 +1,312 @@
+---
+title: "Reproducability Assignment"
+output:
+  html_document: default
+  pdf_document: default
+date: "2023-11-11"
+---
+
+```{r setup, include=FALSE}
+install.packages("knitr")
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+*The following is a template .rmd RMarkdown file for you to use for your homework submission.*
+
+*Please Knit your .rmd to a PDF format or HTML and submit that with no identifiers like your name.*
+
+*To create a PDF, first install tinytex and load the package. Then press the Knit arrow and select "Knit to PDF".*
+
+```{r install packages code, echo=FALSE, results='hide'}
+install.packages(c("ggplot2", "palmerpenguins", "janitor", "dplyr"))
+install.packages("tinytex")
+library(ggplot2)
+library(palmerpenguins)
+library(janitor)
+library(dplyr)
+library(tinytex)
+```
+
+## QUESTION 01: Data Visualisation for Science Communication
+
+*Create a figure using the Palmer Penguin dataset that is correct but badly communicates the data. **Do not make a boxplot**.*
+
+*Use the following references to guide you:*
+
+-   [*https://www.nature.com/articles/533452a*](https://www.nature.com/articles/533452a){.uri}
+-   [*https://elifesciences.org/articles/16800*](https://elifesciences.org/articles/16800){.uri}
+
+*Note: Focus on visual elements rather than writing misleading text on it.*
+
+### a) Provide your figure here:
+
+```{r bad figure code, echo=FALSE}
+
+#Prepare the penguins data
+write.csv(penguins_raw, "data/penguins_raw.csv")
+write.csv(penguins, "data/penguins.csv")
+
+# Explore the variables for interesting connections
+head(penguins_raw)
+penguins
+
+# Make bad graph
+
+island_frame <- data.frame(
+  island= c('Bis', 'Tor', 'Dre'),
+  count= c(44, 52, 56)
+) %>%
+  print()
+
+ggplot(data= island_frame,
+       aes(x= reorder(island, +count), y=count, group=1))+
+  geom_line()+
+  geom_point()+
+  labs(title= "Penguin abundance on islands", x= 'Island', y= 'abundance') +
+  theme_dark()+
+  lims(y= c(30, 56))
+```
+
+### b) Write about how your design choices mislead the reader about the underlying data (200-300 words).
+
+A surprisingly common graphical miscommunication in academic literature is connecting discrete data points with a continuous line. So I have used this design floor here to show how it can be misleading. The connecting line suggests that there are values between the point plotted that do (or on average will) fall on the line (Franzblau & Chung 2012). Often times these 'between values' can just not be known (eg if a survey question discrete age groups of 20-30, and 30-40), but in our case this is more extreme as there is no between value possible between these catagories as they are not obviously related, like age is. That is, there is no clear connection between these 3 islands that would suggest a connection as our misleading line does (Durbin 2004). This data IS useful because it could show numbers of penguin according to a property of the island (such as how isolated it is), it could give us information to help conservation or ecotourism on the islands, or even just show biases in the data set. However, using a connected line graph suggests that there is a trend "penguin abundance is increasing", even though we know that this data shows nothing of the sort. 
+
+Furthermore the actual data is pushed to the top of the graph due to bad y limits. This not only makes it harder to read, but also makes the number seem larger. Along with the misleading line and a -though accurate- purposefully misleading title, I would not be surprised if someone in a rush took this to mean there are too many penguins and they are on the rise. It should instead be a bar graph to show averages of categorical variables, which would allow us to add confidence intervals too so that significance can be quickly estimated by eye. A bar graph does not imply connection, but allows comparison which is the valuable part of this data (to see which islands have the most penguins or largest sample bias).
+
+Finally, it actually obscures a lot of information. In general it is bad practice to plot summary statistics (such as mean) without any way to see the raw data (Franzblau & Chung 2012). In this case it is not clear that the Biscoe island is dominated by Gentoo penguins, and Dream island by Chinstrap. This means that, on a fundamental level, the means are no very useful to compare. Showing the underlying data would allow us to colour by species (or other confounding variables) so we can see biases like these and remove the from the data - and, for example, compare just the abundance of Adelie on each island
+
+##References
+
+Franzblau, L. E. & Chung, K. C. (2012) Graphs, Tables, and Figures in Scientific Publications: The Good, the Bad, and How Not to Be the Latter. The Journal of hand surgery (American ed.). [Online] 37 (3), 591–596.
+
+Durbin, C. G. (2004) Effective Use of Tables and Figures in Abstracts, Presentations, and Papers. Respiratory Care Oct 2004, 49 (10) 1233-1237;
+
+------------------------------------------------------------------------
+
+## QUESTION 2: Data Pipeline
+
+*Write a data analysis pipeline in your .rmd RMarkdown file. You should be aiming to write a clear explanation of the steps as well as clear code.*
+
+*Your code should include the steps practiced in the lab session:*
+
+-   *Load the data*
+
+-   *Appropriately clean the data*
+
+-   *Create an Exploratory Figure (**not a boxplot**)*
+
+-   *Save the figure*
+
+-   ***New**: Run a statistical test*
+
+-   ***New**: Create a Results Figure*
+
+-   *Save the figure*
+
+*An exploratory figure shows raw data, such as the distribution of the data. A results figure demonstrates the stats method chosen, and includes the results of the stats test.*
+
+*Between your code, communicate clearly what you are doing and why.*
+
+*Your text should include:*
+
+-   *Introduction*
+
+-   *Hypothesis*
+
+-   *Stats Method*
+
+-   *Results*
+
+-   *Discussion*
+
+-   *Conclusion*
+
+*You will be marked on the following:*
+
+### a) Your code for readability and functionality
+
+### b) Your figures for communication
+
+### c) Your text communication of your analysis
+
+*Below is a template you can use.*
+
+------------------------------------------------------------------------
+
+### Introduction
+
+The Palmer Penguins data set includes physiological variables of 3 of the major penguin species, such as body mass. Due to the large body of literature studying the behaviour of these charismatic animals, this maybe an opportunity to study sexual selection in relation to these morphological characteristics. Sexual dimorphism in body mass is common in birds, though not as pronounced as other taxa like insects. Yet can swing for larger males or females depending on the taxa (Schoenjahn et al 2020). This study aims to find evidence of sexual dimorphism in the Gentoo species, the direction, and use literature analysis to propose scenarios for the ultimate evolutionary explanation at play - namely if it is inter or intrsexual selection. 
+
+This Code is used to interrogate the question of if Gentoo penguins have significantly different body mass between sexes. It will use a data set of 3 penguin species, "palmerpenguins" (Horst, Hill, Gorman 2020). As a result, we will show code to manipulate the data for the Gentoo penguins, test the difference with a t-test, and then visualise that test with a figure. 
+
+```{r Data loading, manipulation and cleaning}
+
+#Install and library the nescesary packages
+install.packages(c("ggplot2", "palmerpenguins", "janitor", "dplyr", "car", "ragg", "Hmisc"))
+library(ggplot2)
+library(palmerpenguins)
+library(janitor)
+library(dplyr)
+library(car)
+library(ragg)
+library(Hmisc)
+
+#Save the raw data as a csv file into the data folder
+write.csv(penguins_raw, "data/penguins_raw.csv")
+
+#Also load the function definition scripts, both cleaning and plotting.
+source('functions/Functions-cleaning.R')
+source('functions/Functions-plot.R')
+
+#To clean the raw data, run the pipeline and refer to the functions script for better understanding
+Penguins_cleaned <- penguins_raw %>%
+  clean_column_names() %>% #function to make col names computer readable
+  shorten_species() %>% #function to shorten species name to layman's name
+  Remove_NAsex() #function to remove individuals with NA sex
+
+#Check that cleaning was successful
+head(Penguins_cleaned)
+  
+#function to subset the data to remove two other species to only the selected species, then remove other data from the frame with 'select' in the pipe.
+Gentoo_only <- filter_SelectedSpecies_only(Penguins_cleaned, 'Gentoo') %>%
+  select(sex, body_mass_g)
+
+#Check the cleaned data has been correctly filtered
+head(Gentoo_only)
+
+# and save to your data file
+write.csv(Gentoo_only, "data/Gentoo_only.csv")
+```
+
+
+```{r Exploratory figure}
+
+# Visualize the body mass of sexes with a histogram, faceted by sex (to see coding of this figure, look at the functions r script). 
+Figure1 <- plot_histogram(data = Gentoo_only, 
+                          x = "body_mass_g", facet_by = "sex", 
+                          title_as ="Histogram of Gentoo Body Mass, by sex",
+                          x_axis_lab= "Body Mass (g)", y_axis_lab= "Individuals") %>%
+  print()
+
+# Save this figure using the save figure function, which allows you to specify dimensions (width, height, resolution, and scale), the units of width and height are 'cm'.
+save_figure(Figure1, "figures/Figure1_Histogram.png", 40, 30, 170, 3)
+```
+
+### Hypothesis
+
+From the exploratory figures, we hypothesis that male Gentoo penguins have a larger body mass than female Gentoos. So for statistical analysis to answer this question using our sample set, we can set the hypotheses that:
+
+Ho: There is no difference in average body mass between male and female Gentoos.
+Ha: There is a difference in average body mass between male and female Gentoos.(2-tailed)
+
+### Statistical Methods
+
+We can test this using an independent 2 sample t-test because the 2 sample we are comparing were not paired on collection (provided that the sample meets the assumptions). We can see that the assumption of normality in both samples is met in the histogram. The assumption of equal vairance can be tested with a levenes Test. This returns a significant p value (p<0.05) when the variance of the two samples are significantly different from each other, so in this case an insignifcant value means we do meet the assumptions. 
+
+```{r Statistics}
+
+# Perform an independent two sample t-test to see the difference between the mean body mass of sexes, and its significance
+# First check that the histograms meet the assumption of normality by observing the prior histograms (which they do)
+
+# to check the assumption of similar variance, we use the levene test. It returns a P value of 0.4, meaning the variances can be considered equivalent.
+leveneTest(data = Gentoo_only, body_mass_g ~ sex, centre = mean)
+
+# Next use the 2 sample t test function. It returns an effect size of males having an average body mass 805g larger, which is significant (p-value < 2.2e-16)
+t.test(data = Gentoo_only, body_mass_g ~ sex, var.equal = TRUE)
+```
+
+### Results & Discussion
+
+From the histogram and levene's test we can see that our data meets the assumptions so is valid for independent t-testing. It returned a significant difference in body mass (t = -14.722, df = 117, p-value < 2.2e-16) allowing us to reject our Null hypothesis and accept the alternative that Gentoo's have different body mass between the sexes. The effect size was males being around 800g larger, on mean average. This effect size, along with the 95% confidence intervals and raw data is presented in figure 2, to aid with interpretation of the statistical test. The significant difference thus allows us to say that the population also shows this trend. This may suggest that male Gentoos take part in competition for mate selection with large size giving advantage, as this correlation has been noted in other birds (Fairbairn et al 2007). However, in the literature, studies of Gentoo mating behavior seem to show that they spend the most time resting, while conducting self maintenance, low level vigilance, and courtship rituals like pebble collecting. This suggests that mate competition may not be the direct explanation, though the fact that males caught fish during the egg laying period (spending much more time in the water) may explain why they need more muscle and fat reserves (Davis & Darby 1990). 
+
+```{r Plotting Results}
+
+# This function will plot the boody mass of the two sexes as a bar graph, including the actual data points with geom_jitter, and 95% confidence intervals 
+Figure2 <- plot_bar_BodyMass_Sex(data = Gentoo_only) %>%
+  print()
+
+# Save this figure as a png file in a file called "figures", using the same function as before (the width and height are specified in cm)
+save_figure(Figure2, "figures/Figure2_Bar.png", 30, 40, 175, 2.5)
+
+# To save a graph that is more suitable for a poster or power point presentation we can specify increased size of important elements with scale 
+save_figure(Figure2, "figures/Figure2_Bar_Presentation.png", 30, 30, 175, 2.8)
+
+# If you want to see the statistics behind this graph, use the calculate_stats function. Specify the Sex, the function will isolate this sex and retrieve the useful statistics.
+Male_stats <- calculate_stats(Gentoo_only, 'MALE')
+Female_stats <- calculate_stats(Gentoo_only, 'FEMALE')
+
+#And then we can group them into a data frame so that we can print it and view them all together.
+statistics_frame <- data_frame(
+  Sex = c('Female', 'Male'),
+  Mean = c(Male_stats$mean, Female_stats$mean),
+  SE = c(Male_stats$SE, Female_stats$SE),
+  CI = c(Male_stats$CI, Female_stats$CI)
+) %>%
+  print()
+```
+
+### Conclusion
+
+Male Gentoo penguins are on average larger than females, by around 800g on average (figure 2). This is a significant difference (t = -14.722, df = 117, p-value < 2.2e-16), which we can see in Figure 2 (showing 95% CI). This sexual dimorphism suggests that selection pressures are asymmetric between the sexes. The most common explanation for this, including within birds, is mate competition and intrasexual selection on the competing males. Although, there are alternative explanations, such as an advantage in hunting and avoiding predators during the mating period. This aligns with behavioral observations and may indicate that females are choosing males with larger body mass as they will likely be better at provisioning them during the laying season. In this case, what may initially seem like a textbook example of intrasexual selection between competing males, may in fact be intersexual selection of female mate choice. This study is observational so cannot directly discern causality from the correlation, but suggests a route to further investigate the sexual selection at play.
+
+#### Citations
+
+Davis, L. S. & Darby, J. T. (1990) Penguin biology. London: Academic Press.
+
+Fairbairn, D. J. et al. (2007) Sex, Size and Gender Roles: Evolutionary Studies of Sexual Size Dimorphism. [Online]. Oxford: Oxford University Press.
+
+Jonny Schoenjahn, Chris R Pavey, Gimme H Walter, Why female birds of prey are larger than males, Biological Journal of the Linnean Society, Volume 129, Issue 3, March 2020, Pages 532–542.
+
+Analysis was conducted using R (R Core Team, 2022), RStudio (Posit team, 2023, Integrated Development Environment for R. Posit Software, PBC, Boston, MA. URL http://www.posit.co/), and the packages: 
+
+-  H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016
+-  Firke S (2023). _janitor: Simple Tools for Examining and Cleaning Dirty Data_. R package version 2.2.0,
+  <https://CRAN.R-project.org/package=janitor>.
+-  Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R package version 1.1.3,
+  <https://CRAN.R-project.org/package=dplyr>.
+- Fox J, Weisberg S (2019). _An R Companion to Applied Regression_, Third edition. Sage, Thousand Oaks CA.
+  <https://socialsciences.mcmaster.ca/jfox/Books/Companion/>.
+- Pedersen T, Shemanarev M (2023). _ragg: Graphic Devices Based on AGG_. R package version 1.2.6, <https://CRAN.R-project.org/package=ragg>.
+- Harrell Jr F (2023). _Hmisc: Harrell Miscellaneous_. R package version 5.1-1, <https://CRAN.R-project.org/package=Hmisc>.
+
+And with the data set:
+- Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package version 0.1.0.
+  https://allisonhorst.github.io/palmerpenguins/. doi: 10.5281/zenodo.3960218.
+
+------------------------------------------------------------------------
+
+## QUESTION 3: Open Science
+
+### a) GitHub
+
+*Upload your RProject you created for **Question 2** and any files and subfolders used to GitHub. Do not include any identifiers such as your name. Make sure your GitHub repo is public.*
+
+*GitHub link:*
+
+*You will be marked on your repo organisation and readability.*
+
+### b) Share your repo with a partner, download, and try to run their data pipeline.
+
+*Partner's GitHub link:*
+
+*You **must** provide this so I can verify there is no plagiarism between you and your partner.*
+
+### c) Reflect on your experience running their code. (300-500 words)
+
+-   *What elements of your partner's code helped you to understand their data pipeline?*
+
+-   *Did it run? Did you need to fix anything?*
+
+-   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*
+
+-   *If you needed to alter your partner's figure using their code, do you think that would be easy or difficult, and why?*
+
+### d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
+
+-   *What improvements did they suggest, and do you agree?*
+
+-   *What did you learn about writing code for other people?*
+
+
+
