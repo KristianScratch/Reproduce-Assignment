@@ -1,0 +1,3 @@
+##README
+
+This is a repository for the submission of the Reproducibility Assignment, containing the code, data, figures, and knit.
