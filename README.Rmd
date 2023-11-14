@@ -1,0 +1,4 @@
+##README
+
+This is a repository for the submission of the Reproducibility Assignment, containing the code, data, figures, and knit for assesment. The analysis demonstrates a pipeline to test the difference in body mass between sexes of a chosen species, in this case 'Gentoo'. Citations are given in the code (assignment_template.Rmd).
+
