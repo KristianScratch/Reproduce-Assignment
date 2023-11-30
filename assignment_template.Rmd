@@ -134,14 +134,14 @@ Durbin, C. G. (2004) Effective Use of Tables and Figures in Abstracts, Presentat
 
 ### Introduction
 
-The Palmer Penguins data set includes physiological variables of 3 of the major penguin species, such as body mass. Due to the large body of literature studying the behaviour of these charismatic animals, this maybe an opportunity to study sexual selection in relation to these morphological characteristics. Sexual dimorphism in body mass is common in birds, though not as pronounced as other taxa like insects. Yet can swing for larger males or females depending on the taxa (Schoenjahn et al 2020). This study aims to find evidence of sexual dimorphism in the Gentoo species, the direction, and use literature analysis to propose scenarios for the ultimate evolutionary explanation at play - namely if it is inter or intrsexual selection. 
+The Palmer Penguins data set includes physiological variables of 3 of the major penguin species, such as body mass. Due to the large body of literature studying the behaviour of these charismatic animals, this maybe an opportunity to study sexual selection in relation to these morphological characteristics. Sexual dimorphism in body mass is common in birds, though not as pronounced as other taxa like insects. The direction of size dimorphism can swing for larger males or females depending on the taxa (Schoenjahn et al 2020). This study aims to find evidence of sexual dimorphism in the Gentoo species, the direction, and use literature analysis to propose scenarios for the ultimate evolutionary explanation at play - namely if it is inter or intrsexual selection. 
 
 This Code is used to interrogate the question of if Gentoo penguins have significantly different body mass between sexes. It will use a data set of 3 penguin species, "palmerpenguins" (Horst, Hill, Gorman 2020). As a result, we will show code to manipulate the data for the Gentoo penguins, test the difference with a t-test, and then visualise that test with a figure. 
 
 ```{r Data loading, manipulation and cleaning}
 
 #Install and library the nescesary packages
-install.packages(c("ggplot2", "palmerpenguins", "janitor", "dplyr", "car", "ragg", "Hmisc"))
+install.packages(c("ggplot2", "palmerpenguins", "janitor", "dplyr", "car", "ragg", "Hmisc", "rstatix", "ggpubr"))
 library(ggplot2)
 library(palmerpenguins)
 library(janitor)
@@ -149,13 +149,15 @@ library(dplyr)
 library(car)
 library(ragg)
 library(Hmisc)
+library(rstatix)
+library(ggpubr)
 
 #Save the raw data as a csv file into the data folder
 write.csv(penguins_raw, "data/penguins_raw.csv")
 
 #Also load the function definition scripts, both cleaning and plotting.
-source('functions/Functions-cleaning.R')
-source('functions/Functions-plot.R')
+source('functions/Functions_cleaning.R')
+source('functions/Functions_plot.R')
 
 #To clean the raw data, run the pipeline and refer to the functions script for better understanding
 Penguins_cleaned <- penguins_raw %>%
@@ -220,8 +222,9 @@ From the histogram and levene's test we can see that our data meets the assumpti
 
 ```{r Plotting Results}
 
-# This function will plot the boody mass of the two sexes as a bar graph, including the actual data points with geom_jitter, and 95% confidence intervals 
-Figure2 <- plot_bar_BodyMass_Sex(data = Gentoo_only) %>%
+# This function will plot the body mass of the two sexes as a bar graph, including the actual data points with geom_jitter, and 95% confidence intervals 
+
+Figure2 <- plot_bar_BodyMass_Sex2(data = Gentoo_only) %>%
   print()
 
 # Save this figure as a png file in a file called "figures", using the same function as before (the width and height are specified in cm)
@@ -234,7 +237,7 @@ save_figure(Figure2, "figures/Figure2_Bar_Presentation.png", 30, 30, 175, 2.8)
 Male_stats <- calculate_stats(Gentoo_only, 'MALE')
 Female_stats <- calculate_stats(Gentoo_only, 'FEMALE')
 
-#And then we can group them into a data frame so that we can print it and view them all together.
+#And then we can group them into a data frame so that we can print it and view them all together easily.
 statistics_frame <- data_frame(
   Sex = c('Female', 'Male'),
   Mean = c(Male_stats$mean, Female_stats$mean),
@@ -267,6 +270,10 @@ Analysis was conducted using R (R Core Team, 2022), RStudio (Posit team, 2023, I
   <https://socialsciences.mcmaster.ca/jfox/Books/Companion/>.
 - Pedersen T, Shemanarev M (2023). _ragg: Graphic Devices Based on AGG_. R package version 1.2.6, <https://CRAN.R-project.org/package=ragg>.
 - Harrell Jr F (2023). _Hmisc: Harrell Miscellaneous_. R package version 5.1-1, <https://CRAN.R-project.org/package=Hmisc>.
+- Kassambara A (2023). _rstatix: Pipe-Friendly Framework for Basic Statistical Tests_. R package version 0.7.2,
+  <https://rpkgs.datanovia.com/rstatix/>.
+-Kassambara A (2023). _ggpubr: 'ggplot2' Based Publication Ready Plots_. R package version 0.6.0,
+  <https://rpkgs.datanovia.com/ggpubr/>.
 
 And with the data set:
 - Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package version 0.1.0.
