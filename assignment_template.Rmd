@@ -138,10 +138,16 @@ The Palmer Penguins data set includes physiological variables of 3 of the major 
 
 This Code is used to interrogate the question of if Gentoo penguins have significantly different body mass between sexes. It will use a data set of 3 penguin species, "palmerpenguins" (Horst, Hill, Gorman 2020). As a result, we will show code to manipulate the data for the Gentoo penguins, test the difference with a t-test, and then visualise that test with a figure. 
 
-```{r Data loading, manipulation and cleaning}
+Use this Code to install the packages you require:
 
-#Install and library the nescesary packages
+```{r Data loading, manipulation and cleaning}
+#Install and library the necessary packages
 install.packages(c("ggplot2", "palmerpenguins", "janitor", "dplyr", "car", "ragg", "Hmisc", "rstatix", "ggpubr"))
+```
+
+Use This code to Library the Packages as needed:
+
+```{r, library the packages}
 library(ggplot2)
 library(palmerpenguins)
 library(janitor)
@@ -151,7 +157,11 @@ library(ragg)
 library(Hmisc)
 library(rstatix)
 library(ggpubr)
+```
 
+Use this Code to clean and prepare the Gentoo data:
+
+```{r, cleaning the data}
 #Save the raw data as a csv file into the data folder
 write.csv(penguins_raw, "data/penguins_raw.csv")
 
@@ -179,6 +189,7 @@ head(Gentoo_only)
 write.csv(Gentoo_only, "data/Gentoo_only.csv")
 ```
 
+Use this code to explore the Gentoo size sexual dimorphism, via an exploratory histogram:
 
 ```{r Exploratory figure}
 
@@ -202,7 +213,9 @@ Ha: There is a difference in average body mass between male and female Gentoos.(
 
 ### Statistical Methods
 
-We can test this using an independent 2 sample t-test because the 2 sample we are comparing were not paired on collection (provided that the sample meets the assumptions). We can see that the assumption of normality in both samples is met in the histogram. The assumption of equal vairance can be tested with a levenes Test. This returns a significant p value (p<0.05) when the variance of the two samples are significantly different from each other, so in this case an insignifcant value means we do meet the assumptions. 
+We can test this using an independent 2 sample t-test because the 2 sample we are comparing were not paired on collection (provided that the sample meets the assumptions). We can see that the assumption of normality in both samples is met in the histogram. The assumption of equal variance can be tested with a levenes Test. This returns a significant p value (p<0.05) when the variance of the two samples are significantly different from each other, so in this case an insignificant value means we do meet the assumptions. 
+
+Use this code to conduct the statistical analysis:
 
 ```{r Statistics}
 
@@ -220,6 +233,8 @@ t.test(data = Gentoo_only, body_mass_g ~ sex, var.equal = TRUE)
 
 From the histogram and levene's test we can see that our data meets the assumptions so is valid for independent t-testing. It returned a significant difference in body mass (t = -14.722, df = 117, p-value < 2.2e-16) allowing us to reject our Null hypothesis and accept the alternative that Gentoo's have different body mass between the sexes. The effect size was males being around 800g larger, on mean average. This effect size, along with the 95% confidence intervals and raw data is presented in figure 2, to aid with interpretation of the statistical test. The significant difference thus allows us to say that the population also shows this trend. This may suggest that male Gentoos take part in competition for mate selection with large size giving advantage, as this correlation has been noted in other birds (Fairbairn et al 2007). However, in the literature, studies of Gentoo mating behavior seem to show that they spend the most time resting, while conducting self maintenance, low level vigilance, and courtship rituals like pebble collecting. This suggests that mate competition may not be the direct explanation, though the fact that males caught fish during the egg laying period (spending much more time in the water) may explain why they need more muscle and fat reserves (Davis & Darby 1990). 
 
+Use tthis code to plot and save the explanatory figures:
+
 ```{r Plotting Results}
 
 # This function will plot the body mass of the two sexes as a bar graph, including the actual data points with geom_jitter, and 95% confidence intervals 
@@ -232,7 +247,11 @@ save_figure(Figure2, "figures/Figure2_Bar.png", 30, 40, 175, 2.5)
 
 # To save a graph that is more suitable for a poster or power point presentation we can specify increased size of important elements with scale 
 save_figure(Figure2, "figures/Figure2_Bar_Presentation.png", 30, 30, 175, 2.8)
+```
 
+Use this code to display any values that may be needed for transparency, such as the Means, SE and CI.
+
+```{r Displaying important values}
 # If you want to see the statistics behind this graph, use the calculate_stats function. Specify the Sex, the function will isolate this sex and retrieve the useful statistics.
 Male_stats <- calculate_stats(Gentoo_only, 'MALE')
 Female_stats <- calculate_stats(Gentoo_only, 'FEMALE')
@@ -247,11 +266,14 @@ statistics_frame <- data_frame(
   print()
 ```
 
+
 ### Conclusion
 
 Male Gentoo penguins are on average larger than females, by around 800g on average (figure 2). This is a significant difference (t = -14.722, df = 117, p-value < 2.2e-16), which we can see in Figure 2 (showing 95% CI). This sexual dimorphism suggests that selection pressures are asymmetric between the sexes. The most common explanation for this, including within birds, is mate competition and intrasexual selection on the competing males. Although, there are alternative explanations, such as an advantage in hunting and avoiding predators during the mating period. This aligns with behavioral observations and may indicate that females are choosing males with larger body mass as they will likely be better at provisioning them during the laying season. In this case, what may initially seem like a textbook example of intrasexual selection between competing males, may in fact be intersexual selection of female mate choice. This study is observational so cannot directly discern causality from the correlation, but suggests a route to further investigate the sexual selection at play.
 
 #### Citations
+
+The R version and package info can be found it "Session_info.txt"
 
 Davis, L. S. & Darby, J. T. (1990) Penguin biology. London: Academic Press.
 
@@ -278,6 +300,14 @@ Analysis was conducted using R (R Core Team, 2022), RStudio (Posit team, 2023, I
 And with the data set:
 - Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package version 0.1.0.
   https://allisonhorst.github.io/palmerpenguins/. doi: 10.5281/zenodo.3960218.
+  
+```{r Genorating Sessions Info}
+sink(file = "Session_Info.txt")
+sessionInfo()
+sink()
+
+```
+
 
 ------------------------------------------------------------------------
 
@@ -288,6 +318,7 @@ And with the data set:
 *Upload your RProject you created for **Question 2** and any files and subfolders used to GitHub. Do not include any identifiers such as your name. Make sure your GitHub repo is public.*
 
 *GitHub link:*
+https://github.com/KristianScratch/Reproduce-Assignment/tree/main
 
 *You will be marked on your repo organisation and readability.*
 
