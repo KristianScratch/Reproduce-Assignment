@@ -13,28 +13,38 @@
 
 ##A function to plot a histogram of a penguin species coloured by sex
 plot_histogram <- function(data, x, facet_by, title_as, x_axis_lab, y_axis_lab) {
+  
+  #Specify the data used, the response variable, and the independent variable as "facet_by" (in our case being sex)
   ggplot(data= data,
          aes_string(x= x,
-                    fill= facet_by))+
+                    fill= facet_by))+ 
+    
+    #These lines control the histogram aeshtetics like bins, colour, and faceting
     geom_histogram(binwidth = 100) +
     scale_fill_manual(values = c("MALE" = "lightblue", "FEMALE" = "lightpink"))+
-    facet_wrap(facet_by, ncol = 1) +
+    facet_wrap(facet_by, ncol = 1) + 
+    
+    #These lines add the labels and theme
     labs(title = title_as,
          x = x_axis_lab,
          y = y_axis_lab) +
-    theme_linedraw()
+    theme_linedraw() 
 }
 
-##Function to save figure
+##Function to save figures
 
 save_figure <- function(Figure_to_save,
                         filename, width, height, res, scaling){
+  
+  # In these lines we would specify dimesnions and other aesthetic values, but they can be called in the function iteslf (apart from units which is set to avoid confusion)
   agg_png(filename, 
           width   =  width, 
           height  =  height, 
           units   =  "cm", 
           res     =  res, 
           scaling =  scaling)
+  
+  #Then we print the called figure into the image file
   Figure_to_save
   print(Figure_to_save)
   dev.off()
@@ -65,7 +75,7 @@ plot_bar_BodyMass_Sex <- function(data) {
          y = "Body Mass (g)")+
     theme_bw() +
     
-    #then we add the t test results on top
+    #then we superimpose the t test results on top
     stat_pvalue_manual(stat.test, label= "T-test, p = {p}") +
     scale_y_continuous(expand = expansion(mult = c(0.05, 0.3))) 
   

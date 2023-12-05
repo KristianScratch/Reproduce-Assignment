@@ -132,6 +132,8 @@ Durbin, C. G. (2004) Effective Use of Tables and Figures in Abstracts, Presentat
 
 ------------------------------------------------------------------------
 
+# Question 2 Answer
+
 ### Introduction
 
 The Palmer Penguins data set includes physiological variables of 3 of the major penguin species, such as body mass. Due to the large body of literature studying the behaviour of these charismatic animals, this maybe an opportunity to study sexual selection in relation to these morphological characteristics. Sexual dimorphism in body mass is common in birds, though not as pronounced as other taxa like insects. The direction of size dimorphism can swing for larger males or females depending on the taxa (Schoenjahn et al 2020). This study aims to find evidence of sexual dimorphism in the Gentoo species, the direction, and use literature analysis to propose scenarios for the ultimate evolutionary explanation at play - namely if it is inter or intrsexual selection. 
@@ -140,14 +142,14 @@ This Code is used to interrogate the question of if Gentoo penguins have signifi
 
 Use this Code to install the packages you require:
 
-```{r Data loading, manipulation and cleaning}
+```{r Installing packages}
 #Install and library the necessary packages
 install.packages(c("ggplot2", "palmerpenguins", "janitor", "dplyr", "car", "ragg", "Hmisc", "rstatix", "ggpubr"))
 ```
 
-Use This code to Library the Packages as needed:
+Then use This code to Library the Packages as needed:
 
-```{r, library the packages}
+```{r library the packages}
 library(ggplot2)
 library(palmerpenguins)
 library(janitor)
@@ -159,9 +161,9 @@ library(rstatix)
 library(ggpubr)
 ```
 
-Use this Code to clean and prepare the Gentoo data:
+Use this Code to clean (making data computer readable and lacking NAs) and prepare (filtering out the focul species) the Gentoo data:
 
-```{r, cleaning the data}
+```{r Cleaning the data}
 #Save the raw data as a csv file into the data folder
 write.csv(penguins_raw, "data/penguins_raw.csv")
 
@@ -189,7 +191,7 @@ head(Gentoo_only)
 write.csv(Gentoo_only, "data/Gentoo_only.csv")
 ```
 
-Use this code to explore the Gentoo size sexual dimorphism, via an exploratory histogram:
+Use this code to interrogate the Gentoo size sexual dimorphism, via an exploratory histogram:
 
 ```{r Exploratory figure}
 
@@ -217,7 +219,7 @@ We can test this using an independent 2 sample t-test because the 2 sample we ar
 
 Use this code to conduct the statistical analysis:
 
-```{r Statistics}
+```{r Statistical analysis}
 
 # Perform an independent two sample t-test to see the difference between the mean body mass of sexes, and its significance
 # First check that the histograms meet the assumption of normality by observing the prior histograms (which they do)
@@ -237,7 +239,7 @@ Use tthis code to plot and save the explanatory figures:
 
 ```{r Plotting Results}
 
-# This function will plot the body mass of the two sexes as a bar graph, including the actual data points with geom_jitter, and 95% confidence intervals 
+# This function will plot the body mass of the two sexes as a bar graph, including the actual data points with geom_jitter, 95% confidence intervals, and anotation with the statistical test (a t test performed within the function)
 
 Figure2 <- plot_bar_BodyMass_Sex2(data = Gentoo_only) %>%
   print()
@@ -332,7 +334,7 @@ https://github.com/user39201/assignment_palmer_penguins
 
 -   *What elements of your partner's code helped you to understand their data pipeline?*
 
-They had very thorough explanations of the code, what they aimed to do in eahc chunk. They introduced each novel function clearly; explaning the objective ans sometimes justifying choices (such as why they used pdf over other image saving formats). They also make it clear when they are calling on certain folders and where data is being saved to, which makes it easier to follow the overall flow.
+They had very thorough explanations of the code, what they aimed to do in each chunk. They introduced each novel function clearly; explaining the objective ans sometimes justifying choices (such as why they used pdf over other image saving formats). They also make it clear when they are calling on certain folders and where data is being saved to, which makes it easier to follow the overall flow. They used functions where appropriate which condensed the code, used clear and computer readable object names, and cited all packages used.
 
 -   *Did it run? Did you need to fix anything?*
 
