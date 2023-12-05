@@ -305,7 +305,6 @@ And with the data set:
 sink(file = "Session_Info.txt")
 sessionInfo()
 sink()
-
 ```
 
 
@@ -325,6 +324,7 @@ https://github.com/KristianScratch/Reproduce-Assignment/tree/main
 ### b) Share your repo with a partner, download, and try to run their data pipeline.
 
 *Partner's GitHub link:*
+https://github.com/user39201/assignment_palmer_penguins
 
 *You **must** provide this so I can verify there is no plagiarism between you and your partner.*
 
@@ -332,11 +332,19 @@ https://github.com/KristianScratch/Reproduce-Assignment/tree/main
 
 -   *What elements of your partner's code helped you to understand their data pipeline?*
 
+They had very thorough explanations of the code, what they aimed to do in eahc chunk. They introduced each novel function clearly; explaning the objective ans sometimes justifying choices (such as why they used pdf over other image saving formats). They also make it clear when they are calling on certain folders and where data is being saved to, which makes it easier to follow the overall flow.
+
 -   *Did it run? Did you need to fix anything?*
+
+It ran perfectly and I did not need to fix anything.
 
 -   *What suggestions would you make for improving their code to make it more understandable or reproducible, and why?*
 
+They decided to explain the code outside the chunks, rather than using # to follow the code as it is used. This meant I was often flicking back and fourth to try and understand what the explanation was refering to, or to find the explanation for the part of the code I was running. This may be a preference, as I know my partner usually runs their code as full chunks, wheras I like to run line by line. Though, I do believe explaining the data in chunks, rather than as you go on, makes it harder to follow. Secondly I would have prefered if they used head() or similar funcitons to show what changes happened to the data in the cleaning section, rather than just trusting that the code worked. Allowing the reproducer to see what changed when they call "subset_columns" along witht he explanation would aid followability. 
+
 -   *If you needed to alter your partner's figure using their code, do you think that would be easy or difficult, and why?*
+
+They have included clear function files where I can edit the functions that produce figures directly. Here they have used # to anotate some of the parts of the function. Though some are without explanation, such as the "strip.text" in the exploratory function, which could make this more difficult. But most cases are very well anotated. In terms of altering the figure dimentions, resolution and scaling upon saving; they do not show in the main script that you can specify these values. I can go into the function script and alter these values within the function easily, though it may be slighttly more accesible if width, height, resolution, and scaling were variables in the function which I could easily alter in the main script, without having to change the core function coding.
 
 ### d) Reflect on your own code based on your experience with your partner's code and their review of yours. (300-500 words)
 

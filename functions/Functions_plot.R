@@ -49,7 +49,7 @@ plot_bar_BodyMass_Sex <- function(data) {
     t_test(body_mass_g ~ sex) %>%
     add_significance()
   
-  #This clarifies that the t test is testing between males and females
+  #This clarifies that the t test is testing between males and females so it can be placed on the Male/Female bar graph correctly.
   stat.test <- stat.test %>% add_xy_position(x = "sex")
   
   #Then we can use a bar graph plot function, including scatter with geom_jitter, and including error bars with the with stat_summary
