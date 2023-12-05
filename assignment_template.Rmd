@@ -319,7 +319,7 @@ sink()
 *Upload your RProject you created for **Question 2** and any files and subfolders used to GitHub. Do not include any identifiers such as your name. Make sure your GitHub repo is public.*
 
 *GitHub link:*
-https://github.com/KristianScratch/Reproduce-Assignment/tree/main
+https://github.com/userSGK4/Reproduce-Assignment
 
 *You will be marked on your repo organisation and readability.*
 
