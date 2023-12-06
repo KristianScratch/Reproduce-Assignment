@@ -241,7 +241,7 @@ Use tthis code to plot and save the explanatory figures:
 
 # This function will plot the body mass of the two sexes as a bar graph, including the actual data points with geom_jitter, 95% confidence intervals, and anotation with the statistical test (a t test performed within the function)
 
-Figure2 <- plot_bar_BodyMass_Sex2(data = Gentoo_only) %>%
+Figure2 <- plot_bar_BodyMass_Sex(data = Gentoo_only) %>%
   print()
 
 # Save this figure as a png file in a file called "figures", using the same function as before (the width and height are specified in cm)
@@ -352,7 +352,13 @@ They have included clear function files where I can edit the functions that prod
 
 -   *What improvements did they suggest, and do you agree?*
 
+One suggestion was to not use uppercase in object and variable names. One of our coding professors did mention this, though another said that you could use uppercase this way. When googling, it seems that people may not like it because it makes coding faster, and others that it may stop errors down the line. Whether this is a large issue may depend on context.
+
+They said that I should have written CSV files for the cleaned data as well as the data I used (Gentoo_only), whereas I chose to only write one for the cleaned *and* filtered data. I think this is not too bad, because I made a point of using head() to follow how the data was changing, and do not think that an extra csv file would significantly increase follow ability (as the head function sort of attempts to do this already).
+
+Although my saved figures do allow you to change resolution, they are right that a vector or pdf is easier to use and more widely accessible. 
+
 -   *What did you learn about writing code for other people?*
 
-
+I found that errors in spelling are easy to make, which makes reproducibility important, especially for me as I have strong dyslexia. So I am lucky they only found one. I also found that people code in different styles; me and my partner had to conform to how we write code (as I write line by line, wheres he thinks in chunks). This illustrates how, even with different preferences, you can still have reproducibility. I found that it is actually quite easy to annotate code if you do it as you go along. And I also found that the use of clear folder, function scripts, and Git all made my life easier; showing that reproducible work also means it is clear, concise, and navigable *for me* when something goes wrong!
 
