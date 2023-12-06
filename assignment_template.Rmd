@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 *To create a PDF, first install tinytex and load the package. Then press the Knit arrow and select "Knit to PDF".*
 
-```{r install packages code, echo=FALSE, results='hide'}
+```{r install packages code, echo=FALSE, results='hide', include=FALSE}
 install.packages(c("ggplot2", "palmerpenguins", "janitor", "dplyr"))
 install.packages("tinytex")
 library(ggplot2)
@@ -41,7 +41,7 @@ library(tinytex)
 
 ### a) Provide your figure here:
 
-```{r bad figure code, echo=FALSE}
+```{r bad figure code, echo=FALSE, results='hide'}
 
 #Prepare the penguins data
 write.csv(penguins_raw, "data/penguins_raw.csv")
@@ -140,16 +140,18 @@ The Palmer Penguins data set includes physiological variables of 3 of the major 
 
 This Code is used to interrogate the question of if Gentoo penguins have significantly different body mass between sexes. It will use a data set of 3 penguin species, "palmerpenguins" (Horst, Hill, Gorman 2020). As a result, we will show code to manipulate the data for the Gentoo penguins, test the difference with a t-test, and then visualise that test with a figure. 
 
-Use this Code to install the packages you require:
 
-```{r Installing packages}
+**Use this Code to install the packages you require:**
+
+```{r Installing packages, results='hide', message=FALSE}
 #Install and library the necessary packages
 install.packages(c("ggplot2", "palmerpenguins", "janitor", "dplyr", "car", "ragg", "Hmisc", "rstatix", "ggpubr"))
 ```
 
-Then use This code to Library the Packages as needed:
 
-```{r library the packages}
+**Then use This code to Library the Packages as needed:**
+
+```{r library the packages, results='hide', message=FALSE}
 library(ggplot2)
 library(palmerpenguins)
 library(janitor)
@@ -161,7 +163,8 @@ library(rstatix)
 library(ggpubr)
 ```
 
-Use this Code to clean (making data computer readable and lacking NAs) and prepare (filtering out the focul species) the Gentoo data:
+
+**Use this Code to clean (making data computer readable and lacking NAs) and prepare (filtering out the focul species) the Gentoo data:**
 
 ```{r Cleaning the data}
 #Save the raw data as a csv file into the data folder
@@ -191,9 +194,10 @@ head(Gentoo_only)
 write.csv(Gentoo_only, "data/Gentoo_only.csv")
 ```
 
-Use this code to interrogate the Gentoo size sexual dimorphism, via an exploratory histogram:
 
-```{r Exploratory figure}
+**Use this code to interrogate the Gentoo size sexual dimorphism, via an exploratory histogram:**
+
+```{r Exploratory figure, results='hide', warning=FALSE}
 
 # Visualize the body mass of sexes with a histogram, faceted by sex (to see coding of this figure, look at the functions r script). 
 Figure1 <- plot_histogram(data = Gentoo_only, 
@@ -217,9 +221,10 @@ Ha: There is a difference in average body mass between male and female Gentoos.(
 
 We can test this using an independent 2 sample t-test because the 2 sample we are comparing were not paired on collection (provided that the sample meets the assumptions). We can see that the assumption of normality in both samples is met in the histogram. The assumption of equal variance can be tested with a levenes Test. This returns a significant p value (p<0.05) when the variance of the two samples are significantly different from each other, so in this case an insignificant value means we do meet the assumptions. 
 
-Use this code to conduct the statistical analysis:
 
-```{r Statistical analysis}
+**Use this code to conduct the statistical analysis:**
+
+```{r Statistical analysis, warning=FALSE}
 
 # Perform an independent two sample t-test to see the difference between the mean body mass of sexes, and its significance
 # First check that the histograms meet the assumption of normality by observing the prior histograms (which they do)
@@ -235,9 +240,10 @@ t.test(data = Gentoo_only, body_mass_g ~ sex, var.equal = TRUE)
 
 From the histogram and levene's test we can see that our data meets the assumptions so is valid for independent t-testing. It returned a significant difference in body mass (t = -14.722, df = 117, p-value < 2.2e-16) allowing us to reject our Null hypothesis and accept the alternative that Gentoo's have different body mass between the sexes. The effect size was males being around 800g larger, on mean average. This effect size, along with the 95% confidence intervals and raw data is presented in figure 2, to aid with interpretation of the statistical test. The significant difference thus allows us to say that the population also shows this trend. This may suggest that male Gentoos take part in competition for mate selection with large size giving advantage, as this correlation has been noted in other birds (Fairbairn et al 2007). However, in the literature, studies of Gentoo mating behavior seem to show that they spend the most time resting, while conducting self maintenance, low level vigilance, and courtship rituals like pebble collecting. This suggests that mate competition may not be the direct explanation, though the fact that males caught fish during the egg laying period (spending much more time in the water) may explain why they need more muscle and fat reserves (Davis & Darby 1990). 
 
-Use tthis code to plot and save the explanatory figures:
 
-```{r Plotting Results}
+**Use this code to plot and save the explanatory figures:**
+
+```{r Plotting Results, results='hide'}
 
 # This function will plot the body mass of the two sexes as a bar graph, including the actual data points with geom_jitter, 95% confidence intervals, and anotation with the statistical test (a t test performed within the function)
 
@@ -251,9 +257,10 @@ save_figure(Figure2, "figures/Figure2_Bar.png", 30, 40, 175, 2.5)
 save_figure(Figure2, "figures/Figure2_Bar_Presentation.png", 30, 30, 175, 2.8)
 ```
 
-Use this code to display any values that may be needed for transparency, such as the Means, SE and CI.
 
-```{r Displaying important values}
+**Use this code to display any values that may be needed for transparency, such as the Means, SE and CI.**
+
+```{r Displaying important values, warning=FALSE}
 # If you want to see the statistics behind this graph, use the calculate_stats function. Specify the Sex, the function will isolate this sex and retrieve the useful statistics.
 Male_stats <- calculate_stats(Gentoo_only, 'MALE')
 Female_stats <- calculate_stats(Gentoo_only, 'FEMALE')
@@ -303,7 +310,7 @@ And with the data set:
 - Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package version 0.1.0.
   https://allisonhorst.github.io/palmerpenguins/. doi: 10.5281/zenodo.3960218.
   
-```{r Genorating Sessions Info}
+```{r Genorating Sessions Info, include=FALSE}
 sink(file = "Session_Info.txt")
 sessionInfo()
 sink()
